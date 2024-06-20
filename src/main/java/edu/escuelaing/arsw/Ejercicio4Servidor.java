@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class Ejercicio4Servidor {
     public static void main(String[] args) throws IOException {
@@ -25,30 +28,30 @@ public class Ejercicio4Servidor {
         }
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        String inputLine, outputLine, operation;
+        String inputLine, outputLine, operation = "cos";
+        Map<String, Function<Double, Double>> operations = new HashMap<>();
+        operations.put("sin", Math::sin);
+        operations.put("cos", Math::cos);
+        operations.put("tan", Math::tan);
+
         while ((inputLine = in.readLine()) != null) {
-            outputLine = null;
-            if(inputLine.startsWith("fun")) {
-                if (inputLine.startsWith("fun:sin")){
-                    operation = "sin";
-                    System.out.println(Math.sin(Integer.parseInt(inputLine)));
-                    outputLine = "Respuesta de sin: " + Math.sin(Integer.parseInt(inputLine));
-                } else if (inputLine.startsWith("fun:cos")) {
-                    System.out.println(Math.cos(Integer.parseInt(inputLine)));
-                    outputLine = "Respuesta de cos: " + Math.cos(Integer.parseInt(inputLine));
-                } else if (inputLine.startsWith("fun:tan")) {
-                    System.out.println(Math.tan(Integer.parseInt(inputLine)));
-                    outputLine = "Respuesta de tan: " + Math.tan(Integer.parseInt(inputLine));
+            outputLine = "";
+            if (inputLine.startsWith("fun:")) {
+                operation = inputLine.substring(4); // extrae la operación después de "fun:"
+            } else if (operations.containsKey(operation)) {
+                try {
+                    double input = Double.parseDouble(inputLine);
+                    double result = operations.get(operation).apply(input);
+                    outputLine = "Respuesta de " + operation + ": " + result;
+                } catch (NumberFormatException e) {
+                    outputLine = "Entrada no válida: " + inputLine;
                 }
             }
-            else{
-                System.out.println(Math.cos(Integer.parseInt(inputLine)));
-                outputLine = "Respuesta: " + Math.cos(Integer.parseInt(inputLine));
-            }
+            System.out.println(outputLine);
             out.println(outputLine);
-            if (outputLine.contains("Bye"))
-                System.out.println("Bye");
+            if (inputLine.equals("Bye.")) {
                 break;
+            }
         }
         out.close();
         in.close();

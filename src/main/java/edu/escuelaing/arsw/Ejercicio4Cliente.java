@@ -27,6 +27,9 @@ public class Ejercicio4Cliente {
         String userInput;
         while ((userInput = stdIn.readLine()) != null) {
             out.println(userInput);
+            if(in.readLine().equals("Bye.")){
+                break;
+            }
             System.out.println("echo: " + in.readLine());
         }
         out.close();
