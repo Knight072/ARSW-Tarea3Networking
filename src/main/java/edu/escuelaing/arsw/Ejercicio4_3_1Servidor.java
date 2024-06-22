@@ -1,7 +1,7 @@
 package edu.escuelaing.arsw;
 import java.net.*;
 import java.io.*;
-public class Ejercicio3Servidor {
+public class Ejercicio4_3_1Servidor {
     public static void main(String[] args) throws IOException {
             ServerSocket serverSocket = null;
             try {

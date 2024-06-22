@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class Ejercicio4Servidor {
+public class Ejercicio4_3_2Servidor {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
         try {

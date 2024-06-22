@@ -1,9 +1,13 @@
 package edu.escuelaing.arsw;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
-public class Ejercicio3Cliente {
+public class Ejercicio4_3_2Cliente {
     public static void main(String[] args) throws IOException {
         Socket echoSocket = null;
         PrintWriter out = null;
@@ -23,11 +27,14 @@ public class Ejercicio3Cliente {
         String userInput;
         while ((userInput = stdIn.readLine()) != null) {
             out.println(userInput);
+            if (in.readLine().equals("Bye.")) {
+                break;
+            }
             System.out.println("echo: " + in.readLine());
         }
         out.close();
         in.close();
         stdIn.close();
         echoSocket.close();
-        }
+    }
 }
